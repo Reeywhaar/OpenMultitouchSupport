@@ -46,43 +46,63 @@
     return self;
 }
 
-- (void)makeDevice {
-    if (MTDeviceIsAvailable()) {
-        self.device = MTDeviceCreateDefault();
+- (MTDeviceRef)findDevice {
+    if (!MTDeviceIsAvailable()) return nil;
         
-        uuid_t guid;
-        OSStatus err = MTDeviceGetGUID(self.device, &guid);
-        if (!err) {
-            uuid_string_t val;
-            uuid_unparse(guid, val);
-            NSLog(@"GUID: %s", val);
-        }
-        
-        int type;
-        err = MTDeviceGetDriverType(self.device, &type);
-        if (!err) NSLog(@"Driver Type: %d", type);
-        
-        uint64_t deviceID;
-        err = MTDeviceGetDeviceID(self.device, &deviceID);
-        if (!err) NSLog(@"DeviceID: %llu", deviceID);
-        
-        int familyID;
-        err = MTDeviceGetFamilyID(self.device, &familyID);
-        if (!err) NSLog(@"FamilyID: %d", familyID);
+    NSMutableArray* list = (__bridge NSMutableArray*)MTDeviceCreateList();
+    
+    for(int i = 0; i<[list count]; i++) //iterate available devices
+    {
+        MTDeviceRef device = (__bridge MTDeviceRef)(list[i]);
         
         int width, height;
-        err = MTDeviceGetSensorSurfaceDimensions(self.device, &width, &height);
-        if (!err) NSLog(@"Surface Dimensions: %d x %d ", width, height);
+        OSStatus err = MTDeviceGetSensorSurfaceDimensions(device, &width, &height);
+        if (err) continue;
         
-        int rows, cols;
-        err = MTDeviceGetSensorDimensions(self.device, &rows, &cols);
-        if (!err) NSLog(@"Dimensions: %d x %d ", rows, cols);
+        float ratio = (float)width/(float)height;
         
-        bool isOpaque = MTDeviceIsOpaqueSurface(self.device);
-        NSLog(isOpaque ? @"Opaque: true" : @"Opaque: false");
-        
-        // MTPrintImageRegionDescriptors(self.device); work
+        if( ratio < 5.0) return device;
     }
+    
+    return nil;
+}
+
+- (void)makeDevice {
+    self.device = [self findDevice];
+    if(self.device == nil) return;
+    
+    uuid_t guid;
+    OSStatus err = MTDeviceGetGUID(self.device, &guid);
+    if (!err) {
+        uuid_string_t val;
+        uuid_unparse(guid, val);
+        NSLog(@"GUID: %s", val);
+    }
+
+    int type;
+    err = MTDeviceGetDriverType(self.device, &type);
+    if (!err) NSLog(@"Driver Type: %d", type);
+
+    uint64_t deviceID;
+    err = MTDeviceGetDeviceID(self.device, &deviceID);
+    if (!err) NSLog(@"DeviceID: %llu", deviceID);
+
+    int familyID;
+    err = MTDeviceGetFamilyID(self.device, &familyID);
+    if (!err) NSLog(@"FamilyID: %d", familyID);
+
+    int width, height;
+    err = MTDeviceGetSensorSurfaceDimensions(self.device, &width, &height);
+    if (!err) NSLog(@"Surface Dimensions: %d x %d ", width, height);
+
+    int rows, cols;
+    err = MTDeviceGetSensorDimensions(self.device, &rows, &cols);
+    if (!err) NSLog(@"Dimensions: %d x %d ", rows, cols);
+
+    bool isOpaque = MTDeviceIsOpaqueSurface(self.device);
+    NSLog(isOpaque ? @"Opaque: true" : @"Opaque: false");
+
+    // MTPrintImageRegionDescriptors(self.device); work
 }
 
 //- (void)handlePathEvent:(OpenMTTouch *)touch {

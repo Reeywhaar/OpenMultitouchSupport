@@ -61,8 +61,12 @@ typedef void (*MTFrameCallbackFunction)(MTDeviceRef device, MTTouch touches[], i
 typedef void (*MTPathCallbackFunction)(MTDeviceRef device, long pathID, long state, MTTouch* touch);
 typedef void (*MTImageCallbackFunction)(MTDeviceRef, void*, void*, void*);
 
+CFArrayRef MTDeviceCreateList();
 bool MTDeviceIsAvailable(void); // true if can create default device
 MTDeviceRef MTDeviceCreateDefault(void);
+MTDeviceRef MTDeviceCreateFromDeviceID(int64_t);
+MTDeviceRef MTDeviceCreateFromService(io_service_t);
+MTDeviceRef MTDeviceCreateFromGUID(uuid_t);
 OSStatus MTDeviceStart(MTDeviceRef, int);
 OSStatus MTDeviceStop(MTDeviceRef);
 void MTDeviceRelease(MTDeviceRef);
