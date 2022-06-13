@@ -61,7 +61,8 @@
         
         float ratio = (float)width/(float)height;
         
-        if( ratio < 5.0) return device;
+        // Ignore touchbar
+        if (ratio < 5.0) return device;
     }
     
     return nil;
