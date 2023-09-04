@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
     spec.author = { "Takuto Nakamura" => "kyomesuke@icloud.com" }
     spec.social_media_url = "https://twitter.com/Kyomesuke"
     spec.platform = :osx
-    spec.osx.deployment_target = "10.12"
+    spec.osx.deployment_target = "10.13"
     spec.requires_arc = true
     spec.source = { :git => "https://github.com/Kyome22/OpenMultitouchSupport.git", :tag => "#{spec.version}" }
     spec.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '/System/Library/PrivateFrameworks/' }
