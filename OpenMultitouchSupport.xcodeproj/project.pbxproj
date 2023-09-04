@@ -550,6 +550,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyome.OpenMultitouchSupport;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -582,6 +583,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyome.OpenMultitouchSupport;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
